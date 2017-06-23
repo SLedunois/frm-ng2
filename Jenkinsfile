@@ -22,7 +22,4 @@ pipeline {
       }
     }
   }
-  environment {
-    env = 'prod'
-  }
 }
