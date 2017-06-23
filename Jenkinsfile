@@ -1,9 +1,19 @@
 pipeline {
   agent none
   stages {
-    stage('Lint') {
+    stage('Clone') {
+      steps {
+        git(url: 'https://github.com/SLedunois/frm-ng2', branch: 'master', poll: true)
+      }
+    }
+    stage('Install dependencies') {
       steps {
         sh 'npm install'
+      }
+    }
+    stage('Lint') {
+      steps {
+        sh 'ng lint'
       }
     }
     stage('Tests') {
@@ -13,16 +23,11 @@ pipeline {
             sh 'ng test'
             
           },
-          "Lint": {
-            sh 'ng lint'
+          "E2e": {
+            sh 'ng e2e'
             
           }
         )
-      }
-    }
-    stage('E2e') {
-      steps {
-        sh 'ng e2e'
       }
     }
     stage('Build') {
