@@ -3,12 +3,21 @@ pipeline {
   stages {
     stage('Lint') {
       steps {
-        sh 'ng lint'
+        sh 'npm install'
       }
     }
     stage('Tests') {
       steps {
-        sh 'ng test'
+        parallel(
+          "Tests": {
+            sh 'ng test'
+            
+          },
+          "Lint": {
+            sh 'ng lint'
+            
+          }
+        )
       }
     }
     stage('E2e') {
